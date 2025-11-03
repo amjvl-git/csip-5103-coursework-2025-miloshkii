@@ -7,7 +7,8 @@
 \linespread{0.95}
 \begin{document}
 \noindent\LARGE\textbf{Executive Report: Neural Systems Coursework}\\
-\large{Student ID: P2963116}
+\noindent\rule{\linewidth}{1.5pt}\\
+\large Student ID: P2963116
 \normalsize
 \section{Background}
 This report outlines my implementation of artificial neural networks to build a classifier for use with the Fashion-MNIST \cite{mnist} image dataset using PyTorch \cite{pytorch}.
@@ -43,7 +44,8 @@ Further steps that could be taken to improve the models would be to augment trai
 Overall, while more complex, a CNN is far superior when it comes to computer vision classification task. This is likely due to the architecture facilitating the storage and understanding of spatial information by virtue of the matrix structure.
 \newpage
 \appendix
-\section{Appendix}
+\section{Tables and Figures}
+\rule{\linewidth}{1.5pt}
 
 \begin{table}[!htb]
 	\begin{subtable}[h]{0.5\textwidth}
@@ -83,7 +85,7 @@ Overall, while more complex, a CNN is far superior when it comes to computer vis
 		\caption{Modified ANN}
 		\label{ann_modified}
 	\end{subtable}
-	\caption{ANN Structure}
+	\caption{Network Structures}
 	\label{ann_layouts}
 \end{table}
 \begin{table}[!htb]
@@ -110,36 +112,82 @@ Overall, while more complex, a CNN is far superior when it comes to computer vis
 	\caption{CNN Structure}
 	\label{cnn}
 \end{table}
+
 \begin{figure}[!htb]
 	\centering
 	\includegraphics[width=\textwidth]{cnn}
-	\caption{AlexNet-like Visualisation of my CNN Structure}
+	\caption{AlexNet-like Visualisation of my CNN Structure\\Source: NN SVG \cite{nnsvg}}
 	\label{cnn_graphic}
 \end{figure}
+
 \begin{figure}[!htb]
 	\centering
 	\begin{subfigure}[h]{0.3\textwidth}
 		\centering
 		\includegraphics[width=\textwidth]{graph1.png}
-		\caption{ANN Confusion Matrix}
+		\caption{ANN}
 		\label{ann_confm}
 	\end{subfigure}
 	\hfill
 	\begin{subfigure}[h]{0.3\textwidth}
 		\centering
 		\includegraphics[width=\textwidth]{graph2.png}
-		\caption{ANN (modified) Confusion Matrix}
+		\caption{ANN (modified)}
 		\label{dropout_confm}
 	\end{subfigure}
 	\hfill
 	\begin{subfigure}[h]{0.3\textwidth}
 		\centering
 		\includegraphics[width=\textwidth]{graph3.png}
-		\caption{CNN Confusion Matrix}
+		\caption{CNN}
 		\label{cnn_confm}
 	\end{subfigure}
 	\caption{Confusion Matrices}
 	\label{confusion_matrices}
 \end{figure}
 
+\begin{figure}[!htb]
+	\centering
+	\begin{subfigure}[h]{0.32\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{graph4.png}
+		\caption{ANN}
+		\label{ann_hist}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[h]{0.32\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{graph5.png}
+		\caption{ANN (modified)}
+		\label{dropout_hist}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[h]{0.32\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{graph6.png}
+		\caption{CNN}
+		\label{cnn_hist}
+	\end{subfigure}
+	\caption{Loss History Plot During Training}
+	\label{}
+\end{figure}
+
+\begin{figure}[!htb]
+	\centering
+	\begin{subfigure}[h]{0.475\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{graph7}
+		\caption{Rolling Avg. Validation Set Accuracy}
+		\label{val_hist}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[h]{0.475\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{graph8}
+		\caption{Optimiser Comparison}
+		\label{optim_comparison}
+	\end{subfigure}
+	\caption{Comparison Graphs}
+	\label{comparison_graphs}
+\end{figure}
 \end{document}
