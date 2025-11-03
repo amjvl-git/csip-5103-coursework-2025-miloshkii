@@ -25,9 +25,9 @@ I also created a Convolutional Neural Network (CNN) [Table \ref{cnn}, Figure \re
 		
 		\textbf{Model} & Training Time & Accuracy & Training Loss & Validation Loss \\
 		\hline
-		ANN & 4.5 minutes & 88.67\% & 0.0945 & 0.467 \\
-		ANN (modified) & 5 minutes & 89.77\% & 0.152 & 0.298 \\
-		CNN & 12.5 minutes & 91.95\% & 0.0666 & 0.309 \\	
+		ANN & 4.5 minutes & 88.43\% & 0.093 & 0.473 \\
+		ANN (modified) & 5 minutes & 89.94\% & 0.153 & 0.296 \\
+		CNN & 9.5 minutes & 93.02\% & 0.025 & 0.330 \\	
 	\end{tabular}
 	\caption{Key metrics after training}
 \label{results}
@@ -91,16 +91,17 @@ Overall, while more complex, a CNN is far superior when it comes to computer vis
 \begin{table}[!htb]
 	\centering
 	\begin{tabular}{l|l|l|l|l|l|l}
-		\textbf{Layer} & \textbf{Type} & \textbf{Feature Maps} & \textbf{Size} & \textbf{Kernel} & \textbf{Stride} & \textbf{Activation}\\
+		\textbf{Layer} & \textbf{Type} & \textbf{Feature Maps} & \textbf{Output Size} & \textbf{Kernel} & \textbf{Stride} & \textbf{Activation}\\
 		\hline
 		Input& Image & & 28x28x1 & & & \\
-		1& Convolution & 32 & 26x26x32 & 3x3 & (1,1) & ReLU\\
-		2& Convolution & 32 & 24x24x32 & 3x3 & (1,1) & ReLU\\
-		& Max Pooling & & 12x12x32 & 2x2 & (2,2)&\\
-		3& Convolution & 64 & 10x10x64 & 3x3 & (1,1) & ReLU\\
-		4& Convolution & 64 & 8x8x64 & 3x3 & (1,1) & ReLU\\
-		& Max Pooling & & 4x4x64 & 2x2 & (2,2)&\\
-		& Flatten & & 1024 & & &\\
+		1& Convolution & 128 & 28x28x128 & 3x3 & (1,1) & ReLU\\
+		2& Convolution & 128 & 28x28x128 & 3x3 & (1,1) & ReLU\\
+		& Max Pooling & & 14x14x128 & 2x2 & (2,2)&\\
+		3& Convolution & 256 & 14x14x256 & 3x3 & (1,1) & ReLU\\
+		4& Convolution & 256 & 14x14x256 & 3x3 & (1,1) & ReLU\\
+		& Max Pooling & & 7x7x256 & 2x2 & (2,2)&\\
+		& Global Avg. Pooling & & 1x1x256 & 7x7 & &\\
+		& Flatten & & 256 & & &\\
 		5 & Linear & & 128 & & & ReLU\\
 		& Batch Norm & & & & & \\
 		& Dropout & & p=0.4& & & \\
