@@ -1,57 +1,89 @@
 \documentclass[10pt,a4paper]{article}
-\usepackage[margin=1.5cm]{geometry}
+\usepackage[margin=1cm]{geometry}
+\usepackage[backend=biber,style=numeric,sorting=none]{biblatex}
+\addbibresource{E:/Uni/NeuralSystems/csip-5103-coursework-2025-miloshkii/P2963116/TeX/Report.bib}
 \usepackage{caption}
 \usepackage{subcaption}
 \usepackage{graphicx}
 \graphicspath{{E:/Uni/NeuralSystems/csip-5103-coursework-2025-miloshkii/P2963116/TeX/graphics}}
 \renewcommand{\familydefault}{\sfdefault}
 \linespread{0.95}
-\bibliographystyle{plain}
 \begin{document}
 \noindent\LARGE\textbf{Executive Report: Neural Systems Coursework}\\
 \noindent\rule{\linewidth}{1.5pt}\\
-\large Student ID: P2963116
-\normalsize
+\normalsize Student ID: P2963116
 \section{Background}
 This report outlines my implementation of artificial neural networks to build a classifier for use with the Fashion-MNIST \cite{mnist} image dataset using PyTorch \cite{pytorch}.
-The dataset contains 70,000 greyscale images, 28x28 pixels in size. The images depict 10 categories of fashion items [Table \ref{categories}] and is split into two subsets, 60,000 for training and 10,000 for testing. A random sample of 10,000 is taken from the training set for use in validation, tests performed during training to monitor how the model performs. In training, I recorded the loss; an error metric used to adjust model parameters and while in testing a series of performance metrics such as accuracy, precision, recall and F1 Score were measured for each category.\\
+The dataset contains 70,000 greyscale images, 28x28 pixels in size. The images depict 10 categories of fashion items [Table \ref{mnist_categories}] and is split into two subsets, 60,000 for training and 10,000 for testing. A random sample of 10,000 is taken from the training set for use in validation, tests performed during training to monitor how the model performs. In training, I recorded the loss; an error metric used to adjust model parameters and while in testing a series of performance metrics such as accuracy, precision, recall and F1 Score were measured for each category.\\
 I implemented two types of neural network when building the classifiers. The first is a Multi-Layer Perceptron or ANN [Table \ref{ann}], a collection of ‘neurons’ each of which calculate a weighted linear sum based on the training parameters and input. Before passing the result to the neurons in the next layer, we pass the value through an activation function, helping the model learn complex patterns in the training data.The original structure was later modified to reflect innovations as outlined in Section \ref{findings}.\\
 I also created a Convolutional Neural Network (CNN) [Table \ref{cnn}, Fig \ref{cnn_graphic}], a network type particularly effective at dealing with tabular data such as images. We perform convolution operations on the input with smaller matrices to generate feature maps and downsize the input matrix. The image is then flattened and passed through dense layers of similar structure to the ANN.
 
 \section{Findings}\label{findings}
-Initial training was completed over 30 epochs to emphasise the impact of potential issues. One of which is high validation loss compared to training loss, a phenomenon is known as overfitting.\\
+Initial training was completed over 30 epochs to emphasise the impact of potential issues. One of which is high validation loss compared to training loss [Fig \ref{ann_hist}], a phenomenon is known as overfitting.\\
 Mitigating overfitting was achieved through modifying the ANN (due to faster training  time) in a number of ways. Dropout \cite{dropout} randomly disables connections between layers during training, which helps to stabilise the loss over each epoch. Similarly, batch normalisation \cite{batchnorm}  attempts to stabilise training and improve convergence speed. Both significantly mitigated the impact of overfitting in early epochs  [Fig \ref{dropout_hist}].\\
-I also experiemented with optimiser choice. Testing [Fig \ref{optimtesting}] showed that Adam \ref{Adam} was the best performing algorithm, with RMSProp \ref{rmsprop}, SGD \ref{sgd} and Adagrad \ref{adagrad} performing worse or having convergence speed issues.\\
-Data augmentation was also performed, applying random transforms [Fig \ref{augmented}] to training data to increase the number of samples and prevent overfitting. Use of augmented data led to worse test performance, but led to no overfitting even when training over 60 epochs. As such it is worth considering higher epoch counts when training the CNN or future models.\\
+I also experiemented with optimiser choice. Testing [Fig \ref{optim_comparison}] showed that Adam was the best performing algorithm, with RMSProp, SGD and Adagrad performing worse or having convergence speed issues.\\
+Data augmentation was also performed, applying random transforms [Fig \ref{example_aug}] to training data to increase the number of samples and prevent overfitting. Use of augmented data led to worse test performance, but led to no overfitting [Fig \ref{aug_training}]even when training over 60 epochs. As such it is worth considering higher epoch counts when training the CNN or future models.\\
 For the CNN we took all the above findings and trained on an augmented dataset for 60 epochs.
 \subsection{Key Metrics}
 \begin{table}[!htb]
 	\centering
-	\begin{tabular}{l|l|l|l|l|l}	
-		\textbf{Model} & Training Time & Accuracy & Train Loss & Validation Loss & Epochs\\
+	\begin{tabular}{l|l|l|l|l|l|l}	
+		\textbf{Model} & Training Time & Accuracy & Precision (mean) & Recall (mean) & F1 Score (mean) & Epochs\\
 		\hline
-		ANN & 4.5 minutes & 88.43\% & 0.093 & 0.473 & 30\\
-		ANN (modified) & 5 minutes & 89.94\% & 0.153 & 0.296 & 30\\
-		ANN (modified+data aug) & 14 minutes & 87.05\% & 0.422 & 0.375 & 60\\
-		CNN & 9 minutes & 91.79\% & 0.122 & 0.225 & 30\\
-		CNN (data aug) & 36 minutes & 90.14\% & 0.308 & 0.265 & 60\\	
+		ANN & 4.5 minutes & 88.43\% & 0.891 & 0.890 & 0.888 & 30\\
+		ANN (modified) & 5 minutes & 89.94\% & 0.901 & 0.901 & 0.901& 30\\
+		ANN (modified+data aug) & 14 minutes & 87.05\% & 0.872 & 0.871 & 0.870 & 60\\
+		CNN & 9 minutes & 92.39\% & 0.926 & 0.926 & 0.926 &30\\
+		CNN (data aug) & 20 minutes & 91.42\% & 0.917 & 0.916 & 0.916 &60\\	
 	\end{tabular}
 	\caption{Key metrics after training}
 	\label{results}
 \end{table}
 \noindent 
-Data was visualised using Seaborn \cite{seaborn}, Pandas \cite{pandas} and SciKit Learn \cite{scikit-learn} through a series of graphs (Figure \ref{graphs2} and \ref{graphs}) and by plotting the Confusion Matrix (Figure \ref{confusion_matrices}) associated with each model.
-
+Data was visualised using Seaborn \cite{seaborn}, Pandas \cite{pandas} and SciKit Learn \cite{scikit-learn} through a series of graphs (See Appendix A) and by plotting the Confusion Matrix (Figure \ref{confusion_matrices}) associated with each finalised model. This lets us consider all the key metrics for our  models to determine which performs best. In all cases higher is better, so we clearly see the CNN outperform here. We must note that loss  with  data augmentation is higher so given more time training for longer would be ideal.
+In addition, I have visualised examples of the output prediction of the model [Fig \ref{example_pred}] along with some of the filters and feature maps from my CNN [Fig \ref{filterfeatures}].
 \section{Evaluation}
-An alternative fix to overfitting not implemented is through early stopping to prevent divergence of loss values occurring using a patience system. It would also be reasonable to adjust the architecture of my networks to reflect existing high performance classifier architectures such as ResNet, GoogLeNet and VisionTransformer, all of which would likely get higher accuracy scores when compared to my models due to their increased complexity.\\
-Overall, while more complex, a CNN is far superior when it comes to computer vision classification task. This is likely due to the architecture facilitating the storage and understanding of spatial information by virtue of the matrix structure.
+An alternative fix to overfitting not implemented is through early stopping to prevent divergence of loss values occurring using a patience system. It would also be reasonable to adjust the architecture of my networks to reflect existing high performance classifier architectures such as ResNet, GoogLeNet and VisionTransformer, all of which would likely get higher accuracy scores when compared to my models due to their increased complexity. In a similar vein applying pre-trained models to the problem would also alleviate time constraints on training larger models (however it did not feel fitting to do so due to the nature of the  project brief).\\
+Overall, while more complex, a CNN is far superior when it comes to computer vision classification task. All my CNNs produced more precise models with better accuracy, recall and F1-score across all prediction categories when compared to an ANN with equivalent configuration.
+\newpage
+%\bibliography{E:/Uni/NeuralSystems/csip-5103-coursework-2025-miloshkii/P2963116/TeX/Report.bib}
+\nocite{*}
+\printbibliography{}
 \newpage
 \appendix
 \section{Tables and Figures}
 \rule{\linewidth}{1.5pt}
-
 \begin{table}[!htb]
-	\begin{subtable}[h]{0.5\textwidth}
+	\centering
+	\begin{subtable}[h]{0.35\linewidth}
+		\centering
+		\begin{tabular}{l|l}
+			Index & Label\\
+			\hline
+			0&T-Shirt\\
+			1&Trouser\\
+			2&Pullover\\
+			3&Dress\\
+			4&Coat\\
+			5&Sandal\\
+			6&Shirt\\
+			7&Sneaker\\
+			8&Bag\\
+			9&Ankle Boot\\
+		\end{tabular}
+		\caption{Clothing Categories}
+		\label{mnist_categories}
+	\end{subtable}
+	\hfill
+	\begin{subtable}[h]{0.45\textwidth}
+		\centering
+		\includegraphics[width=0.5\textwidth]{example_mnist}
+		\caption{Example Image}
+	\end{subtable}
+	\caption{Fashion MNIST}
+\end{table}
+\begin{table}[!htb]
+	\begin{subtable}[h]{0.45\textwidth}
 		\centering
 		\begin{tabular}{l | l | l | l}
 			\textbf{Layer} & \textbf{Type} & \textbf{Size} & \textbf{Activation}\\
@@ -67,7 +99,7 @@ Overall, while more complex, a CNN is far superior when it comes to computer vis
 		\label{ann}
 	\end{subtable}
 	\hfill
-	\begin{subtable}[h]{0.5\textwidth}
+	\begin{subtable}[h]{0.45\textwidth}
 		\centering
 		\begin{tabular}{l | l | l | l}
 			\textbf{Layer} & \textbf{Type} & \textbf{Size} & \textbf{Activation}\\
@@ -91,6 +123,7 @@ Overall, while more complex, a CNN is far superior when it comes to computer vis
 	\caption{Network Structures}
 	\label{ann_layouts}
 \end{table}
+\newpage
 \begin{table}[!htb]
 	\centering
 	\begin{tabular}{r|l|l|l|l|l|l}
@@ -99,37 +132,107 @@ Overall, while more complex, a CNN is far superior when it comes to computer vis
 		Input& Image & & 28x28x1 & & & \\
 		1& Convolution & 128 & 28x28x128 & 3x3 & (1,1) & ReLU\\
 		& Batch Norm & & & & &\\
-		& Dropout &  & p=0.25 & & &\\
+		& Dropout &  & p=0.2 & & &\\
 		2& Convolution & 128 & 28x28x128 & 3x3 & (1,1) & ReLU\\
 		& Batch Norm & & & & &\\
-		& Dropout &  & p=0.25 & & &\\
+		& Dropout &  & p=0.2 & & &\\
 		& Max Pooling & & 14x14x128 & 2x2 & (2,2)&\\
 		3& Convolution & 256 & 14x14x256 & 3x3 & (1,1) & ReLU\\
 		& Batch Norm & & & & &\\
-		& Dropout &  & p=0.25 & & &\\
+		& Dropout &  & p=0.2 & & &\\
 		4& Convolution & 256 & 14x14x256 & 3x3 & (1,1) & ReLU\\
 		& Batch Norm & & & & &\\
-		& Dropout &  & p=0.25 & & &\\
+		& Dropout &  & p=0.2 & & &\\
 		& Max Pooling & & 7x7x256 & 2x2 & (2,2)&\\
 		& Global Avg. Pool & & 1x1x256 & 7x7 & &\\
 		& Flatten & & 256 & & &\\
 		5 & Linear & & 128 & & & ReLU\\
 		& Batch Norm & & & & & \\
-		& Dropout & & p=0.25 & & & \\
+		& Dropout & & p=0.2 & & & \\
 		6 & Linear & & 64 & & & ReLU\\
 		& Batch Norm & & & & & \\
-		& Dropout & & p=0.25 & & & \\
+		& Dropout & & p=0.2 & & & \\
 		Output & Linear & & 10 & & & Log Softmax\\
 	\end{tabular}
 	\caption{CNN Structure}
 	\label{cnn}
 \end{table}
 
-\begin{figure}[!htb]
+\begin{figure}[!htb] % CNN Visualisation
 	\centering
 	\includegraphics[width=\textwidth]{cnn}
 	\caption{AlexNet-like Visualisation of my CNN Structure\\Source: NN SVG \cite{nnsvg}}
 	\label{cnn_graphic}
+\end{figure}
+
+\begin{figure}[!htb] % Training Losses for ANN, ANN_dropout, CNN
+	\centering
+	\begin{subfigure}[h]{0.32\textwidth} % ANN 
+		\centering
+		\includegraphics[width=\textwidth]{graph4.png}
+		\caption{ANN}
+		\label{ann_hist}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[h]{0.32\textwidth} % ANN_dropout
+		\centering
+		\includegraphics[width=\textwidth]{graph5.png}
+		\caption{ANN (modified)}
+		\label{dropout_hist}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[h]{0.32\textwidth} % CNN
+		\centering
+		\includegraphics[width=\textwidth]{graph6.png}
+		\caption{CNN}
+		\label{cnn_hist}
+	\end{subfigure}
+	\caption{Loss History Plot During Training}
+	\label{graphs2}
+\end{figure}
+
+\begin{figure}[!htb] % Optim Comparison
+	\centering
+	\begin{subfigure}[h]{0.725\textwidth} % Loss graphs
+		\centering
+		\includegraphics[width=\textwidth]{optim_comparison}
+		\caption{Loss}
+		\label{optim_loss}
+	\end{subfigure}
+	\begin{subfigure}[h]{0.25\textwidth} % Accuracy
+		\centering
+		\includegraphics[width=\textwidth]{optim_accuracy}
+		\caption{Accuracy}
+		\label{optim_accuracy}
+	\end{subfigure}
+	\caption{Optimiser Comparison}
+	\label{optim_comparison}
+\end{figure}
+
+\begin{figure} % Augmentation
+	\centering
+	\begin{subfigure}[h]{0.6\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{augmented_image}
+		\caption{Example transform}
+		\label{example_aug}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[h]{0.35\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{data_aug_graph}
+		\caption{Training loss with augmented data}
+		\label{aug_training}
+	\end{subfigure}
+	\caption{Data Augmentation}
+	\label{data_aug}
+\end{figure}
+
+\begin{figure}[!htb] % Metrics
+	\centering
+	\includegraphics[width=\textwidth]{metrics}
+	\caption{Metric Comparison}
+	\label{metrics}
 \end{figure}
 
 \begin{figure}[!htb]
@@ -158,50 +261,35 @@ Overall, while more complex, a CNN is far superior when it comes to computer vis
 	\label{confusion_matrices}
 \end{figure}
 
-\begin{figure}[!htb]
+\begin{figure} % Example Prediction
 	\centering
-	\begin{subfigure}[h]{0.32\textwidth}
-		\centering
-		\includegraphics[width=\textwidth]{graph4.png}
-		\caption{ANN}
-		\label{ann_hist}
-	\end{subfigure}
-	\hfill
-	\begin{subfigure}[h]{0.32\textwidth}
-		\centering
-		\includegraphics[width=\textwidth]{graph5.png}
-		\caption{ANN (modified)}
-		\label{dropout_hist}
-	\end{subfigure}
-	\hfill
-	\begin{subfigure}[h]{0.32\textwidth}
-		\centering
-		\includegraphics[width=\textwidth]{graph6.png}
-		\caption{CNN}
-		\label{cnn_hist}
-	\end{subfigure}
-	\caption{Loss History Plot During Training}
-	\label{graphs2}
+	\includegraphics[width=\textwidth]{example_prediction}
+	\caption{Example Prediction}
+	\label{example_pred}
 \end{figure}
 
 \begin{figure}[!htb]
 	\centering
+	\includegraphics[width=0.6\linewidth]{graph7}
+	\caption{Rolling Avg. Validation Set Accuracy}
+	\label{val_hist}
+\end{figure}
+\begin{figure}[!htb]
+	\centering
 	\begin{subfigure}[h]{0.475\textwidth}
 		\centering
-		\includegraphics[width=\textwidth]{graph7}
-		\caption{Rolling Avg. Validation Set Accuracy}
-		\label{val_hist}
+		\includegraphics[width=\textwidth]{filters}
+		\caption{Filters}
+		\label{filters}
 	\end{subfigure}
 	\hfill
 	\begin{subfigure}[h]{0.475\textwidth}
 		\centering
-		\includegraphics[width=\textwidth]{graph8}
-		\caption{Optimiser Comparison}
-		\label{optim_comparison}
+		\includegraphics[width=\textwidth]{features}
+		\caption{Feature Maps}
+		\label{features}
 	\end{subfigure}
-	\caption{Comparison Graphs}
-	\label{graphs}
+	\caption{Filters and Feature map extraction}
+	\label{filterfeatures}
 \end{figure}
-\newpage
-\bibliography{E:/Uni/NeuralSystems/csip-5103-coursework-2025-miloshkii/P2963116/TeX/Report.bib}
 \end{document}

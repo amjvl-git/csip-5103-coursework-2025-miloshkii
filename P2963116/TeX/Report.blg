@@ -1,50 +1,17 @@
-This is BibTeX, Version 0.99d (TeX Live 2025)
-Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
-The top-level auxiliary file: Report.aux
-The style file: plain.bst
-Database file #1: E:/Uni/NeuralSystems/csip-5103-coursework-2025-miloshkii/P2963116/TeX/Report.bib
-Warning--entry type for "mnist" isn't style-file defined
---line 71 of file E:/Uni/NeuralSystems/csip-5103-coursework-2025-miloshkii/P2963116/TeX/Report.bib
-Warning--I didn't find a database entry for "nnsvg"
-You've used 7 entries,
-            2118 wiz_defined-function locations,
-            541 strings with 5708 characters,
-and the built_in function-call counts, 3274 in all, are:
-= -- 273
-> -- 272
-< -- 1
-+ -- 107
-- -- 100
-* -- 282
-:= -- 569
-add.period$ -- 18
-call.type$ -- 7
-change.case$ -- 70
-chr.to.int$ -- 0
-cite$ -- 7
-duplicate$ -- 77
-empty$ -- 192
-format.name$ -- 100
-if$ -- 640
-int.to.chr$ -- 0
-int.to.str$ -- 7
-missing$ -- 4
-newline$ -- 35
-num.names$ -- 16
-pop$ -- 82
-preamble$ -- 1
-purify$ -- 63
-quote$ -- 0
-skip$ -- 67
-stack$ -- 0
-substring$ -- 139
-swap$ -- 17
-text.length$ -- 1
-text.prefix$ -- 0
-top$ -- 0
-type$ -- 28
-warning$ -- 0
-while$ -- 21
-width$ -- 8
-write$ -- 70
-(There were 2 warnings)
+[0] Config.pm:328> INFO - This is Biber 2.21
+[0] Config.pm:331> INFO - Logfile is 'Report.blg'
+[82] biber-MSWIN64:342> INFO - === 
+[111] Biber.pm:421> INFO - Reading 'Report.bcf'
+[202] Biber.pm:999> INFO - Using all citekeys in bib section 0
+[214] Biber.pm:4487> INFO - Processing section 0
+[222] Biber.pm:4678> INFO - Looking for bibtex file 'E:/Uni/NeuralSystems/csip-5103-coursework-2025-miloshkii/P2963116/TeX/Report.bib' for section 0
+[263] bibtex.pm:1713> INFO - LaTeX decoding ...
+[276] bibtex.pm:1519> INFO - Found BibTeX data source 'E:/Uni/NeuralSystems/csip-5103-coursework-2025-miloshkii/P2963116/TeX/Report.bib'
+[366] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[366] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
+[366] Biber.pm:4307> INFO - Sorting list 'none/global//global/global/global' of type 'entry' with template 'none' and locale 'en-US'
+[366] Biber.pm:4313> INFO - No sort tailoring available for locale 'en-US'
+[376] bbl.pm:676> INFO - Writing 'Report.bbl' with encoding 'UTF-8'
+[384] bbl.pm:779> INFO - Output to Report.bbl
+[385] Biber.pm:132> WARN - Overwriting field 'year' with year value from field 'date' for entry 'nnsvg'
+[385] Biber.pm:134> INFO - WARNINGS: 1
