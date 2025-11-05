@@ -1,0 +1,52 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[margin=1.4cm]{geometry}
+\usepackage[backend=biber,style=numeric,sorting=none]{biblatex}
+\addbibresource{E:/Uni/NeuralSystems/csip-5103-coursework-2025-miloshkii/P2963116/TeX/Report.bib}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{graphicx}
+\graphicspath{{E:/Uni/NeuralSystems/csip-5103-coursework-2025-miloshkii/P2963116/TeX/graphics}}
+\renewcommand{\familydefault}{\sfdefault}
+\linespread{0.95}
+\begin{document}
+\noindent\LARGE\textbf{Executive Report: Neural Systems Coursework}\\
+\noindent\rule{\linewidth}{1.5pt}\\
+\normalsize Student ID: P2963116
+\section{Background}
+This report outlines my implementation of artificial neural networks to build a classifier for use with the Fashion-MNIST \cite{mnist} image dataset using PyTorch \cite{pytorch}.
+The dataset contains 70,000 greyscale images, 28x28 pixels in size. The images depict 10 categories of fashion items and is split into two subsets, 60,000 for training and 10,000 for testing. A random sample of 10,000 is taken from the training set for use in validation, tests performed during training to monitor how the model performs. In training, I recorded the loss; an error metric used to adjust model parameters and while in testing a series of performance metrics such as accuracy, precision, recall and F1 score were measured for each category.\\
+I implemented two types of neural network when building the classifiers. The first is a Multi-Layer Perceptron or ANN, a collection of ‘neurons’ each of which calculate a weighted linear sum based on the training parameters and input. Before passing the result to the neurons in the next layer, we pass the value through an activation function, helping the model learn complex patterns in the training data.The original structure was later modified to reflect innovations as outlined in Section \ref{findings}.\\
+I also created a Convolutional Neural Network (CNN), a network type particularly effective at dealing with tabular data such as images. We perform convolution operations on the input with smaller matrices to generate feature maps and downsize the input matrix. The image is then flattened and passed through dense layers of similar structure to the ANN.
+
+\section{Findings}\label{findings}
+Initial training was completed over 30 epochs to emphasise the impact of potential issues. One of which is high validation loss compared to training loss, a phenomenon is known as overfitting.\\
+Mitigating overfitting was achieved through modifying the ANN (due to faster training  time) in a number of ways. Dropout \cite{dropout} randomly disables connections between layers during training, which helps to stabilise the loss over each epoch. Similarly, batch normalisation \cite{batchnorm}  attempts to stabilise training and improve convergence speed. Both significantly mitigated the impact of overfitting in early epochs.\\
+I also experiemented with optimiser choice. Testing showed that Adam was the best performing algorithm, with RMSProp, SGD and Adagrad performing worse or having convergence speed issues.\\
+Data augmentation was also performed, applying random transforms to training data to increase the number of samples and prevent overfitting. Use of augmented data led to worse test performance, but led to no overfitting even when training over 60 epochs. As such it is worth considering higher epoch counts when training the CNN or future models.\\
+For the CNN we took all the above findings and trained a pair of models, one with data augmentation and one without, note we used 60 epochs for the augmented data.
+\subsection{Key Metrics}
+\begin{table}[!htb]
+	\centering
+	\begin{tabular}{l|l|l|l|l|l|l}	
+		\textbf{Model} & Training Time & Accuracy & Precision (mean) & Recall (mean) & F1 Score (mean) & Epochs\\
+		\hline
+		ANN & 4.5 minutes & 88.43\% & 0.891 & 0.890 & 0.888 & 30\\
+		ANN (modified) & 5 minutes & 89.94\% & 0.901 & 0.901 & 0.901& 30\\
+		ANN (modified+data aug) & 14 minutes & 87.05\% & 0.872 & 0.871 & 0.870 & 60\\
+		CNN & 9 minutes & 92.39\% & 0.926 & 0.926 & 0.926 &30\\
+		CNN (data aug) & 20 minutes & 91.42\% & 0.917 & 0.916 & 0.916 &60\\	
+	\end{tabular}
+	\caption{Key metrics after training}
+	\label{results}
+\end{table}
+\noindent 
+Data was visualised using Seaborn \cite{seaborn}, Pandas \cite{pandas} and SciKit Learn \cite{scikit-learn} through a series of graphs (See Notebook) and by plotting the Confusion Matrix associated with each finalised model. This lets us consider all the key metrics for our  models to determine which performs best. In all cases higher is better, so we clearly see the CNN outperform here. We must note that loss  with  data augmentation is higher so given more time training for longer would be ideal.
+In addition, I have visualised examples of the output prediction of the model  along with some of the filters and feature maps from my CNN.
+\section{Evaluation}
+An alternative fix to overfitting not implemented is through early stopping to prevent divergence of loss values occurring using a patience system. It would also be reasonable to adjust the architecture of my networks to reflect existing high performance classifier architectures such as ResNet, GoogLeNet and VisionTransformer, all of which would likely get higher accuracy scores when compared to my models due to their increased complexity. In a similar vein applying pre-trained models to the problem would also alleviate time constraints on training larger models (however it did not feel fitting to do so due to the nature of the  project brief).\\
+Overall, while more complex, a CNN is far superior when it comes to computer vision classification task. All my CNNs produced more precise models with better accuracy, recall and F1-score across all prediction categories when compared to an ANN with equivalent configuration.
+\newpage
+%\bibliography{E:/Uni/NeuralSystems/csip-5103-coursework-2025-miloshkii/P2963116/TeX/Report.bib}
+\nocite{*}
+\printbibliography{}
+\end{document}
